@@ -1,10 +1,13 @@
 # cljcolor
 
-A Clojure library designed to ... well, that part is up to you.
+A simple color provider.  Spawned from the need
+to chart stuff and the need for palettes.  Evolved
+into leveraging existing libraries to provide a 
+simplified spot for getting colors and palettes.
 
 ## Usage
 
-FIXME
+TBD
 
 ## License
 
