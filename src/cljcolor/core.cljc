@@ -387,7 +387,7 @@
 ;;color ranges...
 (defn get-color [k]
   (or (get *palette* k)
-      (throw (Exception. (str [:unknown-color! k])))))
+      (throw (ex-info (str [:unknown-color! k]) {:color k}))))
 
 (defn get-palette
   ([k]
@@ -396,7 +396,7 @@
      (f)
      (or (get d3-pals k)
          (get d3-pals (keyword k))
-         (throw (Exception. (str [:unkown-pallette! k]))))))
+         (throw (ex-info (str [:unkown-pallette! k]) {:color k})))))
   ([k n]
    (get-palette (keyword (str (name k) "-" n)))))
    
