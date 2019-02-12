@@ -27,8 +27,8 @@
   (color-vec [c]))
 
 ;;color gradients elided
-
-(defrecord color-rgba [^int r ^int g ^int b ^int a]
+(defrecord color-rgba #?(:clj  [^int r ^int g ^int b ^int a]
+                         :cljs [^number r ^number g ^number b ^number a])
   IColor
   (get-rgb [c] (+ (bit-shift-left r 16)
                   (bit-shift-left g 8)
@@ -55,7 +55,7 @@
   (get-r [c] (color-int (color/red (color/int->rgba c))))
   (get-g [c] (color-int (color/green (color/int->rgba c))))
   (get-b [c] (color-int (color/blue (color/int->rgba c))))
-  (get-a [c] (color-int (color/alpha (color/int->rgba)))))
+  (get-a [c] (color-int (color/alpha (color/int->rgba c)))))
 
 (extend-protocol IColorVector
     clojure.lang.PersistentVector
