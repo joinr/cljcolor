@@ -6,12 +6,11 @@
 ;;color specifications in an approachable
 ;;way.
 (ns cljcolor.core
-  (:require [thi.ng.color
-             [core :as color]
-             [gradients :as gradients]
-             [presets :as presets]]
-            [thi.ng.color.presets [brewer :as colorbrewer]
-                                  [categories :as categories]]))
+  (:require [thi.ng.color.core :as color]
+            [thi.ng.color.gradients :as gradients]
+            [thi.ng.color.presets :as presets]
+            [thi.ng.color.presets.brewer :as colorbrewer]
+            [thi.ng.color.presets.categories :as categories]))
 
 ;;Imported from spork.graphics2d
 ;;Eclipse Public License
@@ -260,7 +259,7 @@
         f   (- (* h 6) h_i)
         p   (* v (- 1.0 s))
         q   (* v (- 1.0 (* f s)))
-        t   (* v (- 1.0 (*  (- 1.0 f) s) ))]
+        t   (* v (- 1.0 (*  (- 1.0 f) s)))]
     (rgb-floor  (case h_i
                   0 [v t p]
                   1 [q v p]
@@ -285,8 +284,8 @@
                   :else       (+ (/ (- r g) d) 4))
          6)
      s
-     v]
-    ))
+     v]))
+    
 
 ;;Thanks to Martin Ankerl at
 ;; http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/: 
@@ -302,9 +301,9 @@
 
 (defn saturations
   ([step r g b]
-     (let [[h s v] (rgb->hsv r g b)]
-       (map (fn [sat]
-              (hsv->rgb h sat v)) (take-while #(<= % 1.0) (iterate (fn [x] (+ x step)) 0.0)))))
+   (let [[h s v] (rgb->hsv r g b)]
+     (map (fn [sat]
+            (hsv->rgb h sat v)) (take-while #(<= % 1.0) (iterate (fn [x] (+ x step)) 0.0)))))
   ([step color] (saturations step (get-r color) (get-g color) (get-b color))))
 
 (defn mono-color-palette
@@ -367,8 +366,8 @@
         (for [[k [l r]] brewer-schemes
               n         (range l (inc r))]
           [(keyword (str (name k) "-" n))
-           (fn [] (mapv #(assoc (color-vec %) 3 255) (colorbrewer/brewer-scheme-int k n)))]
-          )))
+           (fn [] (mapv #(assoc (color-vec %) 3 255) (colorbrewer/brewer-scheme-int k n)))])))
+          
 
 (def d3-pals
   (let [opaque (fn [g] (assoc (color-vec g) 3 255))
@@ -398,6 +397,6 @@
      (or (get d3-pals k)
          (get d3-pals (keyword k))
          (throw (Exception. (str [:unkown-pallette! k]))))))
-   ([k n]
-    (get-palette (keyword (str (name k) "-" n)))
-   ))
+  ([k n]
+   (get-palette (keyword (str (name k) "-" n)))))
+   
